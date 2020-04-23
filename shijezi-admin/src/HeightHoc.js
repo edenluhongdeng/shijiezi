@@ -1,3 +1,7 @@
+/*
+*https://segmentfault.com/a/1190000010371752
+* react 高阶组件学习
+*/
 import React, { Component } from "react"
 import withHeader from "./WithHeader.jsx"
 const seflHeader = (title) => (WrappedComponent) => class HOC extends Component {

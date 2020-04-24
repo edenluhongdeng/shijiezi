@@ -2,13 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import HeightHoc from "./HeightHoc.js"
+import HeightHoc from "./HeightHoc"
+import PageDown from "./PageDown.jsx"
 import * as serviceWorker from './serviceWorker';
-
+import 'antd/dist/antd.css';
 ReactDOM.render(
   <React.StrictMode>
-    {/* <HeightHoc /> */}
-    <App />
+    <HeightHoc />
+    {/* <App /> */}
+    {/* <PageDown /> */}
   </React.StrictMode>,
   document.getElementById('root')
 );

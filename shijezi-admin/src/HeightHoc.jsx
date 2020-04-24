@@ -32,6 +32,14 @@ class Page3 extends Component {
     }
 }
 class Demo extends Component {
+    constructor(props){
+        super(props)
+        // propTypes: {
+        //     data:React.PropTypes.array,    // 验证传入的data是不是数组，如果不是则会报错
+        //  loadding:React.PropTypes.bool,  // 验证loadding是否为true
+        //  loadData:React.PropTypes.func, // 验证loadData是否为函数类型
+        // }
+    }
     state = {
         loading:false
     }

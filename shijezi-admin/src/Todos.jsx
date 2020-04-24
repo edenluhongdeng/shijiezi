@@ -1,17 +1,28 @@
-import React, { useState, useEffect, useCallback, useContext, useMemo } from "react"
+import React, { useState, useEffect, useCallback, useContext, useRef } from "react"
 import "./Todos.css"
 const MyContext = React.createContext(null);
 
 const HeaderTodo = () => {
     const { todoAdd } = useContext(MyContext);
+    const dateRef = useRef()
     return (
         <header>
             todos
-            <input
-                type="text"
-                placeholder="输入todos"
-                onBlur={(e) => todoAdd(e.target.value.trim())}
-            />
+            <form onSubmit={(e) => {
+                e.preventDefault()
+                if (dateRef.current.value.trim().length) {
+                    todoAdd(dateRef.current.value.trim())
+                    dateRef.current.value = ""
+                } else {
+                    return false;
+                }
+            }}>
+                <input
+                    ref={dateRef}
+                    type="text"
+                    placeholder="输入todos"
+                />
+            </form>
         </header>
     )
 }
@@ -40,16 +51,17 @@ const ArticleTodo = () => {
         </ul>
     )
 }
+const _$ToDos = "_$ToDos"
 function Todos() {
     const [todos, setTodos] = useState([]);
+
     const todoAdd = useCallback((value) => {
         const ids = Math.random()
         const newTodos = { id: ids, lebal: value, target: false }
-        setTodos([...todos, newTodos])
+        setTodos(()=>[...todos, newTodos])
     })
     const todoDetele = useCallback((id) => {
-        const newTodos = todos.filter(i => i.id !== id)
-        setTodos(newTodos)
+        setTodos(()=>todos.filter(i => i.id !== id))
     })
     const todoTarget = useCallback((id) => {
         const newList = todos.map(i => {
@@ -58,7 +70,7 @@ function Todos() {
             }
             return i;
         })
-        setTodos(newList)
+        setTodos(()=>newList)
     })
     function useWinSize() {
         const winHeight = document.documentElement.clientHeight;
@@ -77,13 +89,19 @@ function Todos() {
         return size;
     }
     const size = useWinSize();
-    console.log(size);
-
+    useEffect(() => {
+        setTodos(JSON.parse(window.localStorage.getItem(_$ToDos)) || [])
+    },[])
+    useEffect(() => {
+        window.localStorage.setItem(_$ToDos, JSON.stringify(todos))
+    }, [todos])
+    console.log(todos);
+    
     return (
         <MyContext.Provider
             value={{ todoAdd, todos, todoTarget, todoDetele }}>
             <div className="todos_list">
-                {size.height}{size.width}
+                {size.height} X {size.width}
                 <HeaderTodo />
                 <ArticleTodo />
             </div>

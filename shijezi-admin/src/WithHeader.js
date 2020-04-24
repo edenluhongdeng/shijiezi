@@ -1,5 +1,7 @@
 import React, { Component } from "react"
-import { Spin } from "antd"
+import ReactDom from 'react-dom';
+import gotem from 'gotem';
+import { Spin,message } from "antd"
 const withHeader = (title) => (WrappedComponent) => class HOC extends Component {
     render() {
         const newProps = {
@@ -7,7 +9,7 @@ const withHeader = (title) => (WrappedComponent) => class HOC extends Component 
         }
         return (
             <div>
-                我的自定义高阶组件
+                我的自定义组件
                 <aside>{title ? title : "我是自定义标题"}</aside>
                 <WrappedComponent {...this.props}{...newProps} />
             </div>
@@ -33,8 +35,29 @@ const withLoading = (loadingCheck)=> {
     }
   }
 
-// 使用
-// @withLoading(props => {
-//     return props.IndexStore.accountList.length == 0;
-//   })
-export {withHeader,withLoading};
+  const withCopy = (targetName) => {
+    return (WrappedComponent) => {
+      return class extends Component {
+        componentDidMount() {
+          const ctx = this;
+          const dom = ReactDom.findDOMNode(ctx);
+          const nodes = {
+            trigger: dom,
+            target: dom.querySelector(targetName)
+          };
+          gotem(nodes.trigger, nodes.target, {
+            success: function () {
+              message.success('复制成功');
+            },
+            error: function () {
+              message.error('复制失败，请手动输入');
+            }
+          });
+        }
+        render() {
+          return <WrappedComponent {...this.props}/>;
+        }
+      };
+    };
+  }
+export {withHeader,withLoading,withCopy};

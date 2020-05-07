@@ -8,9 +8,9 @@ import * as serviceWorker from './serviceWorker';
 import 'antd/dist/antd.css';
 ReactDOM.render(
   <React.StrictMode>
-    <HeightHoc />
+    {/* <HeightHoc /> */}
     {/* <App /> */}
-    {/* <PageDown /> */}
+    <PageDown />
   </React.StrictMode>,
   document.getElementById('root')
 );

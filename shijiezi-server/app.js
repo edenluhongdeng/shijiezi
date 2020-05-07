@@ -6,11 +6,11 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 
+// const db = require('./rest/models/db');
+
 const index = require('./routes/index')
 const report = require('./routes/report')
 
-// const { backendRouter, reportRouter } = require('./rest/index');
-const { backendRouter, frontendRouter } = require('./rest/index');
 // error handler
 onerror(app)
 
@@ -35,12 +35,8 @@ app.use(async (ctx, next) => {
 })
 
 // routes
-// app.use(index.routes(), index.allowedMethods())
-// app.use(report.routes(), report.allowedMethods())
-app.use(backendRouter.routes())
-  .use(backendRouter.allowedMethods())
-  .use(frontendRouter.routes())
-  .use(frontendRouter.allowedMethods());
+app.use(index.routes(), index.allowedMethods())
+app.use(report.routes(), report.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
